@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/mkl0g/sample-lotto-react-testing/issues"
   },
-  "homepage": "https://github.com/mkl0g/sample-lotto-react-testing#readme"
+  "homepage": "https://github.com/mkl0g/sample-lotto-react-testing#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6"
+  }
 }
