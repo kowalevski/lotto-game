@@ -1,0 +1,19 @@
+{
+  "name": "sample-lotto-react-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkl0g/sample-lotto-react-testing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkl0g/sample-lotto-react-testing/issues"
+  },
+  "homepage": "https://github.com/mkl0g/sample-lotto-react-testing#readme"
+}
