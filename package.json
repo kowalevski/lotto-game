@@ -12,7 +12,9 @@
     "validate": "npm-run-all --parallel check-format lint",
     "build": "webpack --mode=production",
     "postbuild": "cp ./public/index.html ./dist/index.html",
-    "dev:client": "webpack-dev-server --mode=production"
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:frontend": "webpack-dev-server --mode=production",
+    "dev:backend": "node backend"
   },
   "repository": {
     "type": "git",
