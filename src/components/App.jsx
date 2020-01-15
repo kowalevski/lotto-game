@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import AuthForm from './AuthForm';
 import Home from './Home';
@@ -33,23 +33,26 @@ const App = () => {
   };
 
   if (!user && token) {
-    return '...loading user';
+    return 'authorization...';
   }
 
   return (
     <>
-      <Route
-        path="/"
-        render={() => <Home user={user} logout={handleLogout} />}
-      />
-      <Route
-        path="/signin"
-        render={() => <AuthForm endpoint="signin" onSuccess={setUser} />}
-      />
-      <Route
-        path="/signup"
-        render={() => <AuthForm endpoint="signup" onSuccess={setUser} />}
-      />
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => <Home user={user} logout={handleLogout} />}
+        />
+        <Route
+          path="/signin"
+          render={() => <AuthForm endpoint="signin" onSuccess={setUser} />}
+        />
+        <Route
+          path="/signup"
+          render={() => <AuthForm endpoint="signup" onSuccess={setUser} />}
+        />
+      </Switch>
     </>
   );
 };

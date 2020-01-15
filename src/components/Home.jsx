@@ -9,6 +9,7 @@ import {
   Col
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+// import PropTypes from 'prop-types';
 import LottoCard from './LottoCard';
 
 const Home = () => {
@@ -56,5 +57,13 @@ const Home = () => {
     </>
   );
 };
+
+/*
+Home.propTypes = {
+  user: PropTypes.objectOf({
+  login: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+  }).isRequired
+}; */
 
 export default Home;
