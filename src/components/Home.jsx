@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
-import LottoCard from './LottoCard';
+import Scorecard from './Scorecard';
 
 const Home = () => {
   return (
@@ -33,7 +33,7 @@ const Home = () => {
       </Navbar>
       <Container>
         <Row>
-          <LottoCard />
+          <Scorecard />
         </Row>
         <br />
         <Row>
