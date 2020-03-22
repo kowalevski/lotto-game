@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import AuthForm from './AuthForm';
 import Home from './Home';
@@ -33,7 +34,11 @@ const App = () => {
   };
 
   if (!user && token) {
-    return 'authorization...';
+    return (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
   }
 
   return (

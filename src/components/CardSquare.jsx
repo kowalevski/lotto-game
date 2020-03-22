@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
+import { ThemeContext } from '../ThemeSwitcher';
 
 const StyledCard = styled(Card)`
   border-radius: 0;
@@ -32,10 +33,12 @@ const BingoNumberText = styled.h3`
 `;
 
 const CardSquare = ({ bingoNumber, isChecked, onCover }) => {
+  const { theme, color } = useContext(ThemeContext);
+
   return (
     <StyledCard
-      bg={isChecked ? 'info' : 'light'}
-      text={isChecked ? 'white' : 'black'}
+      bg={isChecked ? 'info' : theme}
+      text={isChecked ? 'white' : color}
     >
       <BingoNumber
         className="bingo-number"

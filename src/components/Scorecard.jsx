@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Card, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import CardSquare from './CardSquare';
 import utils from '../utils';
+import { ThemeContext } from '../ThemeSwitcher';
 
 const StyledRow = styled(Row)`
   overflow: hidden;
@@ -17,6 +18,7 @@ const StyledRow = styled(Row)`
 
 const Scorecard = () => {
   const [bingoNumbers, setBingoNumbers] = useState(utils.generateBingoNumber());
+  const { theme, color } = useContext(ThemeContext);
 
   const handleCover = (rowKey, bnKey) => {
     setBingoNumbers({
@@ -32,7 +34,7 @@ const Scorecard = () => {
   };
 
   return (
-    <Card border="info">
+    <Card border="info" bg={theme} text={color}>
       <Card.Header>Your Card</Card.Header>
       <Card.Body>
         {Object.keys(bingoNumbers).map(rowKey => (
