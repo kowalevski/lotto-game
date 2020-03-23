@@ -17,39 +17,35 @@ const StyledRow = styled(Row)`
 `;
 
 const Scorecard = () => {
-  const [bingoNumbers, setBingoNumbers] = useState(utils.generateBingoNumber());
+  const { cells, rows } = utils.generateBingoNumbers();
+  const [bingoNumbers, setBingoNumbers] = useState(cells);
   const { theme, color } = useContext(ThemeContext);
 
-  const handleCover = (rowKey, bnKey) => {
+  const handleCover = cellId => {
     setBingoNumbers({
       ...bingoNumbers,
-      [rowKey]: {
-        ...bingoNumbers[rowKey],
-        [bnKey]: {
-          ...bingoNumbers[rowKey][bnKey],
-          isChecked: true
-        }
-      }
+      [cellId]: { ...bingoNumbers[cellId], isChecked: true }
     });
   };
 
   return (
-    <Card border="info" bg={theme} text={color}>
-      <Card.Header>Your Card</Card.Header>
-      <Card.Body>
-        {Object.keys(bingoNumbers).map(rowKey => (
-          <StyledRow>
-            {Object.keys(bingoNumbers[rowKey]).map(bnKey => (
-              <CardSquare
-                bingoNumber={bingoNumbers[rowKey][bnKey].bingoNumber}
-                isChecked={bingoNumbers[rowKey][bnKey].isChecked}
-                onCover={() => handleCover(rowKey, bnKey)}
-              />
-            ))}
-          </StyledRow>
-        ))}
-      </Card.Body>
-    </Card>
+    <>
+      <Card border="info" bg={theme} text={color}>
+        <Card.Header>Your Card</Card.Header>
+        <Card.Body>
+          {Object.keys(rows).map(rowKey => (
+            <StyledRow>
+              {rows[rowKey].map(bnKey => (
+                <CardSquare
+                  cell={bingoNumbers[bnKey]}
+                  onCover={() => handleCover(bnKey)}
+                />
+              ))}
+            </StyledRow>
+          ))}
+        </Card.Body>
+      </Card>
+    </>
   );
 };
 

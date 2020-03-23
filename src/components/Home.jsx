@@ -16,18 +16,22 @@ const Home = ({ user }) => {
           Home
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        {!user && (
-          <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <Link to="/signin" className="nav-link">
-                Sign In
-              </Link>
-              <Link to="/signup" className="nav-link">
-                Sign Up
-              </Link>
-            </Nav>
-          </Navbar.Collapse>
-        )}
+        <Navbar.Collapse className="justify-content-end">
+          <Nav>
+            {user ? (
+              <Navbar.Text>{user.login}</Navbar.Text>
+            ) : (
+              <>
+                <Link to="/signin" className="nav-link">
+                  Sign In
+                </Link>
+                <Link to="/signup" className="nav-link">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
       <Container>
         <br />

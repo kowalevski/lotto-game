@@ -32,8 +32,10 @@ const BingoNumberText = styled.h3`
   line-height: 2.3em;
 `;
 
-const CardSquare = ({ bingoNumber, isChecked, onCover }) => {
+const CardSquare = ({ cell, onCover }) => {
   const { theme, color } = useContext(ThemeContext);
+  if (!cell) return null;
+  const { isChecked, bingoNumber } = cell;
 
   return (
     <StyledCard
@@ -52,14 +54,9 @@ const CardSquare = ({ bingoNumber, isChecked, onCover }) => {
 };
 
 CardSquare.propTypes = {
-  bingoNumber: PropTypes.number,
-  isChecked: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  cell: PropTypes.any.isRequired,
   onCover: PropTypes.func.isRequired
-};
-
-CardSquare.defaultProps = {
-  bingoNumber: null,
-  isChecked: false
 };
 
 export default CardSquare;
