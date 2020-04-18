@@ -1,4 +1,4 @@
-# Sample Lotto React Testing
+# Sample Lotto
 
 ![lotto logo](./lotto.png)
 
