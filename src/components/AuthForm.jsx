@@ -29,7 +29,7 @@ const AuthForm = ({ onSuccess, endpoint }) => {
       data: formValues
     }).then(
       ({ data: { user } }) => {
-        window.localStorage.setItem('token', user.token);
+        window.localStorage.setItem('user_token', user.token);
         onSuccess(user);
         history.push('/');
       },

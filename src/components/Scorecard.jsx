@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, memo, useMemo } from 'react';
 import { Card, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import CardSquare from './CardSquare';
@@ -16,37 +16,36 @@ const StyledRow = styled(Row)`
   }
 `;
 
-const Scorecard = () => {
-  const { cells, rows } = utils.generateBingoNumbers();
-  const [bingoNumbers, setBingoNumbers] = useState(cells);
+const Scorecard = memo(() => {
+  const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
+  const [bingoNumbers, setBingoNumbers] = useState({ ...cells });
   const { theme, color } = useContext(ThemeContext);
 
   const handleCover = cellId => {
+    const { bingoNumber, isChecked } = bingoNumbers[cellId];
     setBingoNumbers({
       ...bingoNumbers,
-      [cellId]: { ...bingoNumbers[cellId], isChecked: true }
+      [cellId]: { bingoNumber, isChecked: !isChecked }
     });
   };
 
   return (
-    <>
-      <Card border="info" bg={theme} text={color}>
-        <Card.Header>Your Card</Card.Header>
-        <Card.Body>
-          {Object.keys(rows).map(rowKey => (
-            <StyledRow>
-              {rows[rowKey].map(bnKey => (
-                <CardSquare
-                  cell={bingoNumbers[bnKey]}
-                  onCover={() => handleCover(bnKey)}
-                />
-              ))}
-            </StyledRow>
-          ))}
-        </Card.Body>
-      </Card>
-    </>
+    <Card border="info" bg={theme} text={color}>
+      <Card.Header>Your Card</Card.Header>
+      <Card.Body>
+        {Object.keys(rows).map(rowKey => (
+          <StyledRow>
+            {rows[rowKey].map(bnKey => (
+              <CardSquare
+                cell={bingoNumbers[bnKey]}
+                onCover={() => handleCover(bnKey)}
+              />
+            ))}
+          </StyledRow>
+        ))}
+      </Card.Body>
+    </Card>
   );
-};
+});
 
 export default Scorecard;

@@ -54,8 +54,9 @@ const CardSquare = ({ cell, onCover }) => {
 };
 
 CardSquare.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  cell: PropTypes.any.isRequired,
+  cell: PropTypes.objectOf({
+    bingoNumber: PropTypes.number
+  }).isRequired,
   onCover: PropTypes.func.isRequired
 };
 

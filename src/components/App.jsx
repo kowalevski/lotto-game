@@ -7,7 +7,9 @@ import Home from './Home';
 
 const App = () => {
   const [user, setUser] = React.useState(null);
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem('user_token');
+
+  console.log(token);
 
   useEffect(() => {
     if (user) {
@@ -22,14 +24,14 @@ const App = () => {
     }).then(
       response => setUser(response.data),
       () => {
-        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('user_token');
         setUser(null);
       }
     );
   }, [token, user]);
 
   const handleLogout = () => {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user_token');
     setUser(null);
   };
 
@@ -42,23 +44,21 @@ const App = () => {
   }
 
   return (
-    <>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => <Home user={user} logout={handleLogout} />}
-        />
-        <Route
-          path="/signin"
-          render={() => <AuthForm endpoint="signin" onSuccess={setUser} />}
-        />
-        <Route
-          path="/signup"
-          render={() => <AuthForm endpoint="signup" onSuccess={setUser} />}
-        />
-      </Switch>
-    </>
+    <Switch>
+      <Route
+        exact
+        path="/"
+        render={() => <Home user={user} logout={handleLogout} />}
+      />
+      <Route
+        path="/signin"
+        render={() => <AuthForm endpoint="signin" onSuccess={setUser} />}
+      />
+      <Route
+        path="/signup"
+        render={() => <AuthForm endpoint="signup" onSuccess={setUser} />}
+      />
+    </Switch>
   );
 };
 
