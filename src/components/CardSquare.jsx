@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
 import { ThemeContext } from '../ThemeSwitcher';
+import Chip from './Chip';
 
 const StyledCard = styled(Card)`
   border-radius: 0;
@@ -21,6 +22,8 @@ const BingoNumber = styled.button`
   border: none;
   outline: none !important;
   color: inherit;
+  position: relative;
+  cursor: inherit !important;
 
   &:disabled {
     cursor: not-allowed;
@@ -38,16 +41,18 @@ const CardSquare = ({ cell, onCover }) => {
   const { isChecked, bingoNumber } = cell;
 
   return (
-    <StyledCard
-      bg={isChecked ? 'info' : theme}
-      text={isChecked ? 'white' : color}
-    >
+    <StyledCard bg={theme} text={color}>
       <BingoNumber
         className="bingo-number"
         disabled={!bingoNumber}
         onClick={() => onCover()}
       >
-        {bingoNumber && <BingoNumberText>{bingoNumber}</BingoNumberText>}
+        {isChecked && <Chip isInSquare />}
+        {bingoNumber && (
+          <BingoNumberText className="bingo-number-text">
+            {bingoNumber}
+          </BingoNumberText>
+        )}
       </BingoNumber>
     </StyledCard>
   );

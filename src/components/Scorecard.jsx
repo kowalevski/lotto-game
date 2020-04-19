@@ -1,6 +1,7 @@
 import React, { useState, useContext, memo, useMemo } from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import CardSquare from './CardSquare';
 import ThemeControl from './ThemeControl';
 import utils from '../utils';
@@ -17,17 +18,20 @@ const StyledRow = styled(Row)`
   }
 `;
 
-const Scorecard = memo(() => {
+const Scorecard = memo(({ isDragged, onDrop }) => {
   const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
   const [cardNumbers, setBingoNumbers] = useState({ ...cells });
   const { theme, color } = useContext(ThemeContext);
 
   const handleCover = cellId => {
+    if (!isDragged) return;
+
     const { bingoNumber, isChecked } = cardNumbers[cellId];
     setBingoNumbers({
       ...cardNumbers,
       [cellId]: { bingoNumber, isChecked: !isChecked }
     });
+    onDrop();
   };
 
   return (
@@ -40,7 +44,7 @@ const Scorecard = memo(() => {
           </Col>
         </Row>
       </Card.Header>
-      <Card.Body>
+      <Card.Body className="scorecard">
         {Object.keys(rows).map(rowKey => (
           <StyledRow>
             {rows[rowKey].map(bnKey => (
@@ -55,5 +59,10 @@ const Scorecard = memo(() => {
     </Card>
   );
 });
+
+Scorecard.propTypes = {
+  isDragged: PropTypes.bool.isRequired,
+  onDrop: PropTypes.func.isRequired
+};
 
 export default Scorecard;

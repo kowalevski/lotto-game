@@ -15,9 +15,17 @@ const StyledChip = styled.img`
     `
     opacity: 0.7;
   `}
+
+  ${({ isInSquare }) =>
+    isInSquare &&
+    `
+        position: absolute;
+        left: 2px;
+        top: 2px;
+  `}
 `;
 
-const Chip = ({ onDrag, id, isDragged, isDropped }) => {
+const Chip = ({ onDrag, id, isDragged, isDropped, isInSquare }) => {
   if (isDropped) {
     return null;
   }
@@ -28,6 +36,7 @@ const Chip = ({ onDrag, id, isDragged, isDropped }) => {
       alt="chip"
       onClick={() => onDrag(id)}
       isDragged={isDragged}
+      isInSquare={isInSquare}
     />
   );
 };
@@ -36,7 +45,12 @@ Chip.propTypes = {
   onDrag: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   isDragged: PropTypes.bool.isRequired,
-  isDropped: PropTypes.bool.isRequired
+  isDropped: PropTypes.bool.isRequired,
+  isInSquare: PropTypes.bool
+};
+
+Chip.defaultProps = {
+  isInSquare: false
 };
 
 export default Chip;

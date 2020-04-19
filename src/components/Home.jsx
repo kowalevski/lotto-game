@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useInterval } from 'beautiful-react-hooks';
+import { mapValues } from 'lodash';
 import { ThemeContext, useTheme } from '../ThemeSwitcher';
 import Scorecard from './Scorecard';
 import Header from './Header';
@@ -33,6 +34,23 @@ const Home = ({ user }) => {
   }, 1000);
 
   useEffect(() => {
+    document.body.addEventListener('click', ({ target }) => {
+      if (
+        target.className.includes('bingo-number') ||
+        target.className.includes('bingo-number-text')
+      ) {
+        return;
+      }
+
+      setChips(ch => ({
+        ...mapValues(ch, chip => ({
+          ...chip,
+          isDragged: false
+        }))
+      }));
+      setIsDragged(false);
+    });
+
     if (!isCleared && usedBingoNumbers.length === 89) {
       clearInterval();
     }
@@ -42,6 +60,10 @@ const Home = ({ user }) => {
     } else {
       document.body.style.cursor = 'default';
     }
+
+    // return () => {
+    //   document.body.removeEventListener('click');
+    // };
   }, [usedBingoNumbers, isCleared, isDragged]);
 
   const handleStartGame = () => setIsGameStarted(true);
@@ -49,10 +71,19 @@ const Home = ({ user }) => {
   const handleDragChip = id => {
     const isDraggedVal = !chips[id].isDragged;
     setChips({
-      ...generatedChips,
+      ...mapValues(chips, chip => ({ ...chip, isDragged: false })),
       [id]: { ...chips[id], isDragged: isDraggedVal }
     });
     setIsDragged(isDraggedVal);
+  };
+
+  const handleDropChip = () => {
+    const id = Object.values(chips).findIndex(chip => chip.isDragged);
+    setChips({
+      ...chips,
+      [id]: { ...chips[id], isDropped: true }
+    });
+    setIsDragged(false);
   };
 
   return (
@@ -64,7 +95,7 @@ const Home = ({ user }) => {
           {isGameStarted ? (
             <>
               <Col md={7}>
-                <Scorecard />
+                <Scorecard isDragged={isDragged} onDrop={handleDropChip} />
                 <br />
                 <Chips chips={chips} onDrag={handleDragChip} />
               </Col>
