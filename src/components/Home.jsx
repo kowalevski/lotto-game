@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useInterval } from 'beautiful-react-hooks';
@@ -7,10 +7,14 @@ import Scorecard from './Scorecard';
 import Header from './Header';
 import Showman from './Showman';
 import BingoNumbers from './BingoNumbers';
+import Chips from './Chips';
 import utils from '../utils';
 
 const Home = ({ user }) => {
   const theme = useTheme();
+  const generatedChips = useMemo(() => utils.generateChips(), []);
+  const [chips, setChips] = useState(generatedChips);
+  const [isDragged, setIsDragged] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [bingoNumber, setBingoNumber] = useState(null);
   const [usedBingoNumbers, setUsedBingoNumbers] = useState([]);
@@ -28,13 +32,28 @@ const Home = ({ user }) => {
     }
   }, 1000);
 
-  const handleStartGame = () => setIsGameStarted(true);
-
   useEffect(() => {
     if (!isCleared && usedBingoNumbers.length === 89) {
       clearInterval();
     }
-  }, [usedBingoNumbers, isCleared]);
+
+    if (isDragged) {
+      document.body.style.cursor = 'url(./chip.png), auto';
+    } else {
+      document.body.style.cursor = 'default';
+    }
+  }, [usedBingoNumbers, isCleared, isDragged]);
+
+  const handleStartGame = () => setIsGameStarted(true);
+
+  const handleDragChip = id => {
+    const isDraggedVal = !chips[id].isDragged;
+    setChips({
+      ...generatedChips,
+      [id]: { ...chips[id], isDragged: isDraggedVal }
+    });
+    setIsDragged(isDraggedVal);
+  };
 
   return (
     <ThemeContext.Provider value={theme}>
@@ -46,6 +65,8 @@ const Home = ({ user }) => {
             <>
               <Col md={7}>
                 <Scorecard />
+                <br />
+                <Chips chips={chips} onDrag={handleDragChip} />
               </Col>
               <Col md={5}>
                 <Showman time={time} bingoNumber={bingoNumber} />

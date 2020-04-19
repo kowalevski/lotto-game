@@ -17,14 +17,20 @@ const StyledBarrel = styled.div`
 const Barrel = ({ bingoNumber }) => {
   return (
     <StyledBarrel>
-      <BingoNumber number={bingoNumber} isBouncing isInBarrel />
+      {bingoNumber && (
+        <BingoNumber number={bingoNumber} isBouncing isInBarrel />
+      )}
       <img src="./barrel.png" alt="barrel" />
     </StyledBarrel>
   );
 };
 
 Barrel.propTypes = {
-  bingoNumber: PropTypes.number.isRequired
+  bingoNumber: PropTypes.number
+};
+
+Barrel.defaultProps = {
+  bingoNumber: null
 };
 
 export default Barrel;

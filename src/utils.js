@@ -15,7 +15,6 @@ const NUMBERS_RANGE = {
 };
 
 const getRandomInt = (argMin, argMax, exclude) => {
-  console.log('getRandomInt');
   const min = Math.ceil(argMin);
   const max = Math.floor(argMax);
   const res = Math.floor(Math.random() * (max - min)) + min;
@@ -79,7 +78,21 @@ const generateBingoNumbers = () => {
   return { rows, cells };
 };
 
+const generateChips = () =>
+  Array.from(new Array(20)).reduce(
+    (acc, _, i) => ({
+      ...acc,
+      [i]: {
+        id: i,
+        isDragged: false,
+        isDropped: false
+      }
+    }),
+    {}
+  );
+
 export default {
   generateBingoNumbers,
-  getRandomInt
+  getRandomInt,
+  generateChips
 };
