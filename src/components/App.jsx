@@ -9,8 +9,6 @@ const App = () => {
   const [user, setUser] = React.useState(null);
   const token = window.localStorage.getItem('user_token');
 
-  console.log(token);
-
   useEffect(() => {
     if (user) {
       return;

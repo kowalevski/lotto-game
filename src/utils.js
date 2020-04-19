@@ -15,6 +15,7 @@ const NUMBERS_RANGE = {
 };
 
 const getRandomInt = (argMin, argMax, exclude) => {
+  console.log('getRandomInt');
   const min = Math.ceil(argMin);
   const max = Math.floor(argMax);
   const res = Math.floor(Math.random() * (max - min)) + min;
@@ -79,5 +80,6 @@ const generateBingoNumbers = () => {
 };
 
 export default {
-  generateBingoNumbers
+  generateBingoNumbers,
+  getRandomInt
 };

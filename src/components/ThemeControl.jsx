@@ -1,32 +1,22 @@
 import React, { useContext } from 'react';
-import { Card, FormCheck, Col, Row } from 'react-bootstrap';
+import { FormCheck } from 'react-bootstrap';
 import { ThemeContext, DARK_THEME, LIGHT_THEME } from '../ThemeSwitcher';
 
 const ThemeControl = () => {
-  const { theme, color, setTheme } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
 
-  const handleChange = ({ target }) => setTheme(target.value);
+  const handleChange = () => {
+    const newVal = theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+    setTheme(newVal);
+  };
 
   return (
-    <Card bg={theme} text={color}>
-      <Card.Header>Theme</Card.Header>
-      <Card.Body>
-        <Row>
-          {[LIGHT_THEME, DARK_THEME].map(t => (
-            <Col md="2">
-              <FormCheck
-                checked={theme === t}
-                type="radio"
-                label={t}
-                name="theme"
-                value={t}
-                onChange={handleChange}
-              />
-            </Col>
-          ))}
-        </Row>
-      </Card.Body>
-    </Card>
+    <FormCheck
+      type="switch"
+      id="custom-switch"
+      label="🌒"
+      onChange={handleChange}
+    />
   );
 };
 

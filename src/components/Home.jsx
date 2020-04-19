@@ -1,48 +1,63 @@
-import React from 'react';
-import { Container, Row, Navbar, Nav, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import Scorecard from './Scorecard';
+import { useInterval } from 'beautiful-react-hooks';
 import { ThemeContext, useTheme } from '../ThemeSwitcher';
-import ThemeControl from './ThemeControl';
+import Scorecard from './Scorecard';
+import Header from './Header';
+import Showman from './Showman';
+import BingoNumbers from './BingoNumbers';
+import utils from '../utils';
 
 const Home = ({ user }) => {
   const theme = useTheme();
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [bingoNumber, setBingoNumber] = useState(null);
+  const [usedBingoNumbers, setUsedBingoNumbers] = useState([]);
+  const [time, setTime] = useState(0);
+  const [isCleared, clearInterval] = useInterval(() => {
+    if (isGameStarted) {
+      setTime(t => t + 1);
+
+      if (time === 5) {
+        const bn = utils.getRandomInt(1, 90, usedBingoNumbers);
+        setBingoNumber(bn);
+        setUsedBingoNumbers([...usedBingoNumbers, bn]);
+        setTime(0);
+      }
+    }
+  }, 1000);
+
+  const handleStartGame = () => setIsGameStarted(true);
+
+  useEffect(() => {
+    if (!isCleared && usedBingoNumbers.length === 89) {
+      clearInterval();
+    }
+  }, [usedBingoNumbers, isCleared]);
 
   return (
     <ThemeContext.Provider value={theme}>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Link to="/" className="navbar-brand">
-          Home
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse className="justify-content-end">
-          <Nav>
-            {user ? (
-              <Navbar.Text>{user.login}</Navbar.Text>
-            ) : (
-              <>
-                <Link to="/signin" className="nav-link">
-                  Sign In
-                </Link>
-                <Link to="/signup" className="nav-link">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <Header user={user} />
       <Container>
         <br />
         <Row className="justify-content-center">
-          <Scorecard />
-        </Row>
-        <br />
-        <Row className="justify-content-center">
-          <Col md="6">
-            <ThemeControl />
-          </Col>
+          {isGameStarted ? (
+            <>
+              <Col md={7}>
+                <Scorecard />
+              </Col>
+              <Col md={5}>
+                <Showman time={time} bingoNumber={bingoNumber} />
+                <br />
+                <BingoNumbers numbers={usedBingoNumbers} />
+              </Col>
+            </>
+          ) : (
+            <Button size="lg" variant="success" onClick={handleStartGame}>
+              Start Game
+            </Button>
+          )}
         </Row>
       </Container>
     </ThemeContext.Provider>
