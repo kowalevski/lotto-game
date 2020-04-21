@@ -22,6 +22,10 @@ const StyledChip = styled.img`
         position: absolute;
         left: 2px;
         top: 2px;
+
+        &:hover {
+          opacity: 0.5;
+        }
   `}
 `;
 
@@ -34,7 +38,7 @@ const Chip = ({ onDrag, id, isDragged, isDropped, isInSquare }) => {
     <StyledChip
       src="./chip.png"
       alt="chip"
-      onClick={() => onDrag(id)}
+      onClick={() => onDrag && onDrag(id)}
       isDragged={isDragged}
       isInSquare={isInSquare}
     />

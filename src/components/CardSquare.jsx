@@ -7,11 +7,6 @@ import Chip from './Chip';
 
 const StyledCard = styled(Card)`
   border-radius: 0;
-
-  &:hover {
-    background-color: #17a2b8 !important;
-    color: white;
-  }
 `;
 
 const BingoNumber = styled.button`
@@ -35,7 +30,7 @@ const BingoNumberText = styled.h3`
   line-height: 2.3em;
 `;
 
-const CardSquare = ({ cell, onCover }) => {
+const CardSquare = ({ cell, onClick }) => {
   const { theme, color } = useContext(ThemeContext);
   if (!cell) return null;
   const { isChecked, bingoNumber } = cell;
@@ -45,7 +40,7 @@ const CardSquare = ({ cell, onCover }) => {
       <BingoNumber
         className="bingo-number"
         disabled={!bingoNumber}
-        onClick={() => onCover()}
+        onClick={onClick}
       >
         {isChecked && <Chip isInSquare />}
         {bingoNumber && (
@@ -62,7 +57,7 @@ CardSquare.propTypes = {
   cell: PropTypes.objectOf({
     bingoNumber: PropTypes.number
   }).isRequired,
-  onCover: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired
 };
 
 export default CardSquare;

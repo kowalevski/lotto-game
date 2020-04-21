@@ -3,7 +3,6 @@ import { Card, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CardSquare from './CardSquare';
-import ThemeControl from './ThemeControl';
 import utils from '../utils';
 import { ThemeContext } from '../ThemeSwitcher';
 
@@ -18,39 +17,46 @@ const StyledRow = styled(Row)`
   }
 `;
 
-const Scorecard = memo(({ isDragged, onDrop }) => {
+const Scorecard = memo(({ draggedChipId, onDrop, onReset }) => {
   const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
   const [cardNumbers, setBingoNumbers] = useState({ ...cells });
   const { theme, color } = useContext(ThemeContext);
 
   const handleCover = cellId => {
-    if (!isDragged) return;
+    const { bingoNumber, isChecked, chipId } = cardNumbers[cellId];
 
-    const { bingoNumber, isChecked } = cardNumbers[cellId];
+    if (chipId !== null) {
+      setBingoNumbers({
+        ...cardNumbers,
+        [cellId]: { bingoNumber, isChecked: false, chipId: null }
+      });
+      onReset(chipId);
+      return;
+    }
+
+    if (draggedChipId === null) return;
+
     setBingoNumbers({
       ...cardNumbers,
-      [cellId]: { bingoNumber, isChecked: !isChecked }
+      [cellId]: { bingoNumber, isChecked: !isChecked, chipId: draggedChipId }
     });
     onDrop();
   };
 
   return (
-    <Card border="info" bg={theme} text={color}>
+    <Card bg={theme} text={color}>
       <Card.Header>
-        <Row className="justify-content-between">
-          <Col md={10}>Your Card</Col>
-          <Col md={2} className="text-right">
-            <ThemeControl />
-          </Col>
+        <Row className="justify-content-between align-items-center">
+          <Col md={12}>Your Card</Col>
         </Row>
       </Card.Header>
       <Card.Body className="scorecard">
         {Object.keys(rows).map(rowKey => (
-          <StyledRow>
+          <StyledRow className="justify-content-center">
             {rows[rowKey].map(bnKey => (
               <CardSquare
                 cell={cardNumbers[bnKey]}
-                onCover={() => handleCover(bnKey)}
+                onClick={() => handleCover(bnKey)}
               />
             ))}
           </StyledRow>
@@ -61,8 +67,9 @@ const Scorecard = memo(({ isDragged, onDrop }) => {
 });
 
 Scorecard.propTypes = {
-  isDragged: PropTypes.bool.isRequired,
-  onDrop: PropTypes.func.isRequired
+  draggedChipId: PropTypes.number.isRequired,
+  onDrop: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired
 };
 
 export default Scorecard;

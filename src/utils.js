@@ -71,7 +71,10 @@ const generateBingoNumbers = () => {
       }
 
       rows[i] = [...(rows[i] || []), idKey];
-      cells = { ...cells, [idKey]: { bingoNumber, isChecked: false } };
+      cells = {
+        ...cells,
+        [idKey]: { bingoNumber, isChecked: false, chipId: null }
+      };
     }
   }
 

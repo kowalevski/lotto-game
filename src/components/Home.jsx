@@ -9,14 +9,16 @@ import Header from './Header';
 import Showman from './Showman';
 import BingoNumbers from './BingoNumbers';
 import Chips from './Chips';
+import Result from './Result';
 import utils from '../utils';
 
 const Home = ({ user }) => {
   const theme = useTheme();
   const generatedChips = useMemo(() => utils.generateChips(), []);
-  const [chips, setChips] = useState(generatedChips);
-  const [isDragged, setIsDragged] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isResultShown, setIsResultShown] = useState(false);
+  const [chips, setChips] = useState(generatedChips);
+  const [draggedChipId, setDraggedChipId] = useState(false);
   const [bingoNumber, setBingoNumber] = useState(null);
   const [usedBingoNumbers, setUsedBingoNumbers] = useState([]);
   const [time, setTime] = useState(0);
@@ -33,69 +35,98 @@ const Home = ({ user }) => {
     }
   }, 1000);
 
-  useEffect(() => {
-    document.body.addEventListener('click', ({ target }) => {
-      if (
-        target.className.includes('bingo-number') ||
-        target.className.includes('bingo-number-text')
-      ) {
-        return;
-      }
+  const handleResetDropChip = ({ target }) => {
+    if (
+      target.className.includes('bingo-number') ||
+      target.className.includes('bingo-number-text')
+    ) {
+      return;
+    }
 
-      setChips(ch => ({
-        ...mapValues(ch, chip => ({
-          ...chip,
-          isDragged: false
-        }))
-      }));
-      setIsDragged(false);
-    });
+    setChips(ch => ({
+      ...mapValues(ch, chip => ({
+        ...chip,
+        isDragged: false
+      }))
+    }));
+    setDraggedChipId(null);
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleResetDropChip);
 
     if (!isCleared && usedBingoNumbers.length === 89) {
       clearInterval();
     }
 
-    if (isDragged) {
+    if (draggedChipId !== null) {
       document.body.style.cursor = 'url(./chip.png), auto';
     } else {
       document.body.style.cursor = 'default';
     }
 
-    // return () => {
-    //   document.body.removeEventListener('click');
-    // };
-  }, [usedBingoNumbers, isCleared, isDragged]);
+    return () => {
+      document.body.removeEventListener('click', handleResetDropChip);
+    };
+  }, [usedBingoNumbers, isCleared, draggedChipId]);
 
   const handleStartGame = () => setIsGameStarted(true);
 
   const handleDragChip = id => {
-    const isDraggedVal = !chips[id].isDragged;
+    const isChipDragged = chips[id].isDragged;
+
     setChips({
       ...mapValues(chips, chip => ({ ...chip, isDragged: false })),
-      [id]: { ...chips[id], isDragged: isDraggedVal }
+      [id]: { ...chips[id], isDragged: !isChipDragged }
     });
-    setIsDragged(isDraggedVal);
+    setDraggedChipId(id);
   };
 
   const handleDropChip = () => {
-    const id = Object.values(chips).findIndex(chip => chip.isDragged);
     setChips({
       ...chips,
-      [id]: { ...chips[id], isDropped: true }
+      [draggedChipId]: { ...chips[draggedChipId], isDropped: true }
     });
-    setIsDragged(false);
+    setDraggedChipId(null);
   };
+
+  const handleResetChip = id => {
+    setChips({
+      ...chips,
+      [id]: { ...chips[id], isDropped: false }
+    });
+  };
+
+  const handleHideResult = () => {
+    setIsResultShown(false);
+    setIsGameStarted(false);
+  };
+
+  const handleShowResult = () => setIsResultShown(true);
 
   return (
     <ThemeContext.Provider value={theme}>
       <Header user={user} />
       <Container>
+        <Result isResultShown={isResultShown} onHideResult={handleHideResult} />
         <br />
-        <Row className="justify-content-center">
-          {isGameStarted ? (
-            <>
+        {isGameStarted ? (
+          <>
+            <Row>
+              <Col md={12}>
+                <Button variant="success" size="sm" onClick={handleShowResult}>
+                  Finish Game
+                </Button>
+              </Col>
+            </Row>
+            <br />
+            <Row>
               <Col md={7}>
-                <Scorecard isDragged={isDragged} onDrop={handleDropChip} />
+                <Scorecard
+                  draggedChipId={draggedChipId}
+                  onDrop={handleDropChip}
+                  onReset={handleResetChip}
+                />
                 <br />
                 <Chips chips={chips} onDrag={handleDragChip} />
               </Col>
@@ -104,13 +135,15 @@ const Home = ({ user }) => {
                 <br />
                 <BingoNumbers numbers={usedBingoNumbers} />
               </Col>
-            </>
-          ) : (
+            </Row>
+          </>
+        ) : (
+          <Row className="justify-content-center">
             <Button size="lg" variant="success" onClick={handleStartGame}>
               Start Game
             </Button>
-          )}
-        </Row>
+          </Row>
+        )}
       </Container>
     </ThemeContext.Provider>
   );
