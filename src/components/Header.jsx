@@ -15,7 +15,7 @@ const Header = ({ user }) => {
           {user ? (
             <Navbar.Text>
               Signed in as:
-              <a href="/">{user.login}</a>
+              <a href="/"> {user.login}</a>
             </Navbar.Text>
           ) : (
             <>
