@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 import { v4 as uuid } from 'uuid';
+import constants from './constants';
 
 const EMPTY_CELLS_MAX_COUNT = {
   ROW: 4,
@@ -11,7 +12,7 @@ const ROWS_MAX_COUNT = 3;
 
 const NUMBERS_RANGE = {
   MIN: 1,
-  MAX: 90
+  MAX: constants.MAX_BINGO_NUMBERS
 };
 
 const getRandomInt = (argMin, argMax, exclude) => {
@@ -97,9 +98,58 @@ const generateChips = () =>
 const getFormattedNumberItem = (numb, i, list) =>
   `${numb}${i < list.length - 1 ? ', ' : ''}`;
 
+const getResult = (cardNumbers, usedBingoNumbers) => {
+  const {
+    guessedNumbers,
+    wrongNumbers,
+    otherNumbers,
+    allNumbers: all
+  } = Object.values(cardNumbers).reduce(
+    (acc, { bingoNumber, isChecked }) => {
+      if (!bingoNumber) return acc;
+
+      const allNumbers = [...acc.allNumbers, bingoNumber];
+
+      if (!isChecked)
+        return {
+          ...acc,
+          allNumbers,
+          otherNumbers: [...acc.otherNumbers, bingoNumber]
+        };
+
+      if (usedBingoNumbers.includes(bingoNumber)) {
+        return {
+          ...acc,
+          allNumbers,
+          guessedNumbers: [...acc.guessedNumbers, bingoNumber]
+        };
+      }
+
+      return {
+        ...acc,
+        allNumbers,
+        wrongNumbers: [...acc.wrongNumbers, bingoNumber]
+      };
+    },
+    {
+      guessedNumbers: [],
+      wrongNumbers: [],
+      otherNumbers: [],
+      allNumbers: []
+    }
+  );
+  const missedNumbers = usedBingoNumbers.filter(bn =>
+    otherNumbers.includes(bn)
+  );
+  const isPlayerWinner = guessedNumbers.length === all.length;
+
+  return { guessedNumbers, wrongNumbers, missedNumbers, isPlayerWinner };
+};
+
 export default {
   generateBingoNumbers,
   getRandomInt,
   generateChips,
-  getFormattedNumberItem
+  getFormattedNumberItem,
+  getResult
 };

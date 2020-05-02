@@ -4,6 +4,7 @@ import { useInterval } from 'beautiful-react-hooks';
 import { mapValues } from 'lodash';
 import PropTypes from 'prop-types';
 import utils from '../utils';
+import constants from '../constants';
 import Scorecard from './Scorecard';
 import Showman from './Showman';
 import BingoNumbers from './BingoNumbers';
@@ -12,20 +13,24 @@ import Result from './Result';
 
 const Gamefield = ({ onFinishGame, username }) => {
   const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
-  const [cardNumbers, setBingoNumbers] = useState({ ...cells });
   const generatedChips = useMemo(() => utils.generateChips(), []);
+  const [cardNumbers, setBingoNumbers] = useState(cells);
   const [isResultShown, setIsResultShown] = useState(false);
   const [chips, setChips] = useState(generatedChips);
   const [draggedChipId, setDraggedChipId] = useState(null);
   const [usedBingoNumbers, setUsedBingoNumbers] = useState([]);
-  const [time, setTime] = useState(5);
+  const [time, setTime] = useState(constants.GETTING_BARREL_NUMBER_TIME);
   const [isCleared, clearInterval] = useInterval(() => {
     setTime(t => t - 1);
 
     if (time === 0) {
-      const bn = utils.getRandomInt(1, 90, usedBingoNumbers);
+      const bn = utils.getRandomInt(
+        1,
+        constants.MAX_BINGO_NUMBERS,
+        usedBingoNumbers
+      );
       setUsedBingoNumbers([...usedBingoNumbers, bn]);
-      setTime(5);
+      setTime(constants.GETTING_BARREL_NUMBER_TIME);
     }
   }, 1000);
   const currentBingoNumber = useMemo(
@@ -50,58 +55,10 @@ const Gamefield = ({ onFinishGame, username }) => {
     setDraggedChipId(null);
   };
 
-  const getResult = () => {
-    const {
-      guessedNumbers,
-      wrongNumbers,
-      otherNumbers,
-      allNumbers: all
-    } = Object.values(cardNumbers).reduce(
-      (acc, { bingoNumber, isChecked }) => {
-        if (!bingoNumber) return acc;
-
-        const allNumbers = [...acc.allNumbers, bingoNumber];
-
-        if (!isChecked)
-          return {
-            ...acc,
-            allNumbers,
-            otherNumbers: [...acc.otherNumbers, bingoNumber]
-          };
-
-        if (usedBingoNumbers.includes(bingoNumber)) {
-          return {
-            ...acc,
-            allNumbers,
-            guessedNumbers: [...acc.guessedNumbers, bingoNumber]
-          };
-        }
-
-        return {
-          ...acc,
-          allNumbers,
-          wrongNumbers: [...acc.wrongNumbers, bingoNumber]
-        };
-      },
-      {
-        guessedNumbers: [],
-        wrongNumbers: [],
-        otherNumbers: [],
-        allNumbers: []
-      }
-    );
-    const missedNumbers = usedBingoNumbers.filter(bn =>
-      otherNumbers.includes(bn)
-    );
-    const isPlayerWinner = guessedNumbers.length === all.length;
-
-    return { guessedNumbers, wrongNumbers, missedNumbers, isPlayerWinner };
-  };
-
   useEffect(() => {
     document.body.addEventListener('click', handleResetDropChip);
 
-    if (!isCleared && usedBingoNumbers.length === 89) {
+    if (!isCleared && usedBingoNumbers.length === constants.LAST_BINGO_NUMBER) {
       clearInterval();
     }
 
@@ -172,7 +129,9 @@ const Gamefield = ({ onFinishGame, username }) => {
     wrongNumbers,
     missedNumbers,
     isPlayerWinner
-  } = useMemo(getResult, [isResultShown]);
+  } = useMemo(() => utils.getResult(cardNumbers, usedBingoNumbers), [
+    isResultShown
+  ]);
 
   return (
     <>
