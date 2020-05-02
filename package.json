@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint src --ext .js,.jsx",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
-    "validate": "npm-run-all --parallel check-format lint",
+    "validate": "npm-run-all --parallel check-format lint test",
     "build": "webpack --mode=production",
     "postbuild": "cp ./public/index.html ./dist/index.html",
     "dev": "npm-run-all --parallel dev:*",
     "dev:frontend": "webpack-dev-server --mode=production",
-    "dev:backend": "node backend"
+    "dev:backend": "node backend",
+    "setup": "npm install && npm run validate && npm run build"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/runtime": "^7.7.7",
+    "@types/jest": "^25.2.1",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.1",
     "eslint": "^6.8.0",
@@ -45,6 +47,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "file-loader": "^5.0.2",
     "husky": "^3.1.0",
+    "jest": "^25.5.4",
     "lint-staged": "^9.5.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
