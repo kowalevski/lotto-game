@@ -11,23 +11,27 @@ import Chips from './Chips';
 import Result from './Result';
 
 const Gamefield = ({ onFinishGame, username }) => {
+  const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
+  const [cardNumbers, setBingoNumbers] = useState({ ...cells });
   const generatedChips = useMemo(() => utils.generateChips(), []);
   const [isResultShown, setIsResultShown] = useState(false);
   const [chips, setChips] = useState(generatedChips);
   const [draggedChipId, setDraggedChipId] = useState(null);
-  const [bingoNumber, setBingoNumber] = useState(null);
   const [usedBingoNumbers, setUsedBingoNumbers] = useState([]);
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(5);
   const [isCleared, clearInterval] = useInterval(() => {
-    setTime(t => t + 1);
+    setTime(t => t - 1);
 
-    if (time === 5) {
+    if (time === 0) {
       const bn = utils.getRandomInt(1, 90, usedBingoNumbers);
-      setBingoNumber(bn);
       setUsedBingoNumbers([...usedBingoNumbers, bn]);
-      setTime(0);
+      setTime(5);
     }
   }, 1000);
+  const currentBingoNumber = useMemo(
+    () => usedBingoNumbers[usedBingoNumbers.length - 1],
+    [usedBingoNumbers]
+  );
 
   const handleResetDropChip = ({ target }) => {
     if (
@@ -46,6 +50,54 @@ const Gamefield = ({ onFinishGame, username }) => {
     setDraggedChipId(null);
   };
 
+  const getResult = () => {
+    const {
+      guessedNumbers,
+      wrongNumbers,
+      otherNumbers,
+      allNumbers: all
+    } = Object.values(cardNumbers).reduce(
+      (acc, { bingoNumber, isChecked }) => {
+        if (!bingoNumber) return acc;
+
+        const allNumbers = [...acc.allNumbers, bingoNumber];
+
+        if (!isChecked)
+          return {
+            ...acc,
+            allNumbers,
+            otherNumbers: [...acc.otherNumbers, bingoNumber]
+          };
+
+        if (usedBingoNumbers.includes(bingoNumber)) {
+          return {
+            ...acc,
+            allNumbers,
+            guessedNumbers: [...acc.guessedNumbers, bingoNumber]
+          };
+        }
+
+        return {
+          ...acc,
+          allNumbers,
+          wrongNumbers: [...acc.wrongNumbers, bingoNumber]
+        };
+      },
+      {
+        guessedNumbers: [],
+        wrongNumbers: [],
+        otherNumbers: [],
+        allNumbers: []
+      }
+    );
+    const missedNumbers = usedBingoNumbers.filter(bn =>
+      otherNumbers.includes(bn)
+    );
+    const isPlayerWinner = guessedNumbers.length === all.length;
+
+    return { guessedNumbers, wrongNumbers, missedNumbers, isPlayerWinner };
+  };
+
   useEffect(() => {
     document.body.addEventListener('click', handleResetDropChip);
 
@@ -62,7 +114,7 @@ const Gamefield = ({ onFinishGame, username }) => {
     return () => {
       document.body.removeEventListener('click', handleResetDropChip);
     };
-  }, [usedBingoNumbers, isCleared, draggedChipId]);
+  }, [usedBingoNumbers, isCleared, draggedChipId, isResultShown]);
 
   const handleDragChip = id => {
     const isChipDragged = chips[id].isDragged;
@@ -94,18 +146,53 @@ const Gamefield = ({ onFinishGame, username }) => {
     setIsResultShown(true);
   };
 
+  const handleCoverCardSquare = cellId => {
+    const { bingoNumber, isChecked, chipId } = cardNumbers[cellId];
+
+    if (chipId !== null) {
+      setBingoNumbers({
+        ...cardNumbers,
+        [cellId]: { bingoNumber, isChecked: false, chipId: null }
+      });
+      handleResetChip(chipId);
+      return;
+    }
+
+    if (draggedChipId === null) return;
+
+    setBingoNumbers({
+      ...cardNumbers,
+      [cellId]: { bingoNumber, isChecked: !isChecked, chipId: draggedChipId }
+    });
+    handleDropChip();
+  };
+
+  const {
+    guessedNumbers,
+    wrongNumbers,
+    missedNumbers,
+    isPlayerWinner
+  } = useMemo(getResult, [isResultShown]);
+
   return (
     <>
       <Result
         isResultShown={isResultShown}
         onFinishGame={onFinishGame}
         username={username}
+        guessedNumbers={guessedNumbers}
+        wrongNumbers={wrongNumbers}
+        missedNumbers={missedNumbers}
+        isPlayerWinner={isPlayerWinner}
       />
       <br />
       <Row>
         <Col md={12}>
           <Button variant="success" size="sm" onClick={handleShowResult}>
-            Finish Game
+            <span>Finish Game </span>
+            <span role="img" aria-label="finish">
+              🏁
+            </span>
           </Button>
         </Col>
       </Row>
@@ -113,15 +200,15 @@ const Gamefield = ({ onFinishGame, username }) => {
       <Row>
         <Col md={7}>
           <Scorecard
-            draggedChipId={draggedChipId}
-            onDrop={handleDropChip}
-            onReset={handleResetChip}
+            onCover={handleCoverCardSquare}
+            rows={rows}
+            cardNumbers={cardNumbers}
           />
           <br />
           <Chips chips={chips} onDrag={handleDragChip} />
         </Col>
         <Col md={5}>
-          <Showman time={time} bingoNumber={bingoNumber} />
+          <Showman time={time} bingoNumber={currentBingoNumber} />
           <br />
           <BingoNumbers numbers={usedBingoNumbers} />
         </Col>

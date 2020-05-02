@@ -27,7 +27,10 @@ const Home = ({ user }) => {
         ) : (
           <Row className="justify-content-center">
             <Button size="lg" variant="success" onClick={handleStartGame}>
-              Start Game
+              <span>Start Game </span>
+              <span role="img" aria-label="start">
+                🚀
+              </span>
             </Button>
           </Row>
         )}

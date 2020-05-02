@@ -94,8 +94,12 @@ const generateChips = () =>
     {}
   );
 
+const getFormattedNumberItem = (numb, i, list) =>
+  `${numb}${i < list.length - 1 ? ', ' : ''}`;
+
 export default {
   generateBingoNumbers,
   getRandomInt,
-  generateChips
+  generateChips,
+  getFormattedNumberItem
 };

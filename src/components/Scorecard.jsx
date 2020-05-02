@@ -1,9 +1,8 @@
-import React, { useState, useContext, memo, useMemo } from 'react';
+import React, { useContext, memo } from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CardSquare from './CardSquare';
-import utils from '../utils';
 import { ThemeContext } from '../ThemeSwitcher';
 
 const StyledRow = styled(Row)`
@@ -17,31 +16,8 @@ const StyledRow = styled(Row)`
   }
 `;
 
-const Scorecard = memo(({ draggedChipId, onDrop, onReset }) => {
-  const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
-  const [cardNumbers, setBingoNumbers] = useState({ ...cells });
+const Scorecard = memo(({ cardNumbers, rows, onCover }) => {
   const { theme, color } = useContext(ThemeContext);
-
-  const handleCover = cellId => {
-    const { bingoNumber, isChecked, chipId } = cardNumbers[cellId];
-
-    if (chipId !== null) {
-      setBingoNumbers({
-        ...cardNumbers,
-        [cellId]: { bingoNumber, isChecked: false, chipId: null }
-      });
-      onReset(chipId);
-      return;
-    }
-
-    if (draggedChipId === null) return;
-
-    setBingoNumbers({
-      ...cardNumbers,
-      [cellId]: { bingoNumber, isChecked: !isChecked, chipId: draggedChipId }
-    });
-    onDrop();
-  };
 
   return (
     <Card bg={theme} text={color}>
@@ -56,7 +32,7 @@ const Scorecard = memo(({ draggedChipId, onDrop, onReset }) => {
             {rows[rowKey].map(bnKey => (
               <CardSquare
                 cell={cardNumbers[bnKey]}
-                onClick={() => handleCover(bnKey)}
+                onClick={() => onCover(bnKey)}
               />
             ))}
           </StyledRow>
@@ -67,9 +43,17 @@ const Scorecard = memo(({ draggedChipId, onDrop, onReset }) => {
 });
 
 Scorecard.propTypes = {
-  draggedChipId: PropTypes.number.isRequired,
-  onDrop: PropTypes.func.isRequired,
-  onReset: PropTypes.func.isRequired
+  onCover: PropTypes.func.isRequired,
+  cardNumbers: PropTypes.objectOf({
+    [PropTypes.string]: PropTypes.objectOf({
+      bingoNumber: PropTypes.number,
+      chipId: PropTypes.number,
+      isChecked: PropTypes.bool
+    })
+  }).isRequired,
+  rows: PropTypes.objectOf({
+    [PropTypes.string]: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired
 };
 
 export default Scorecard;

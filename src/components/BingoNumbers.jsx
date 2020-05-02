@@ -8,9 +8,9 @@ const BingoNumbers = ({ numbers }) => {
     <Card>
       <Card.Header>Bingo Numbers</Card.Header>
       <Card.Body>
-        {numbers.map(n => (
-          <BingoNumber number={n} />
-        ))}
+        {numbers.map(
+          (n, i) => i < numbers.length - 1 && <BingoNumber number={n} />
+        )}
       </Card.Body>
     </Card>
   );
