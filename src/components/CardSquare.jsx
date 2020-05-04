@@ -54,8 +54,9 @@ const CardSquare = ({ cell, onClick }) => {
 };
 
 CardSquare.propTypes = {
-  cell: PropTypes.objectOf({
-    bingoNumber: PropTypes.number
+  cell: PropTypes.shape({
+    bingoNumber: PropTypes.number,
+    isChecked: PropTypes.bool
   }).isRequired,
   onClick: PropTypes.func.isRequired
 };

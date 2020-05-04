@@ -40,7 +40,7 @@ const Home = ({ user }) => {
 };
 
 Home.propTypes = {
-  user: PropTypes.objectOf({
+  user: PropTypes.shape({
     login: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired
   }).isRequired

@@ -28,11 +28,12 @@ const Scorecard = memo(({ cardNumbers, rows, onCover }) => {
       </Card.Header>
       <Card.Body className="scorecard">
         {Object.keys(rows).map(rowKey => (
-          <StyledRow className="justify-content-center">
+          <StyledRow className="justify-content-center" key={rowKey}>
             {rows[rowKey].map(bnKey => (
               <CardSquare
                 cell={cardNumbers[bnKey]}
                 onClick={() => onCover(bnKey)}
+                key={bnKey}
               />
             ))}
           </StyledRow>
@@ -44,14 +45,14 @@ const Scorecard = memo(({ cardNumbers, rows, onCover }) => {
 
 Scorecard.propTypes = {
   onCover: PropTypes.func.isRequired,
-  cardNumbers: PropTypes.objectOf({
-    [PropTypes.string]: PropTypes.objectOf({
+  cardNumbers: PropTypes.shape({
+    [PropTypes.string]: PropTypes.shape({
       bingoNumber: PropTypes.number,
       chipId: PropTypes.number,
       isChecked: PropTypes.bool
     })
   }).isRequired,
-  rows: PropTypes.objectOf({
+  rows: PropTypes.shape({
     [PropTypes.string]: PropTypes.arrayOf(PropTypes.string)
   }).isRequired
 };

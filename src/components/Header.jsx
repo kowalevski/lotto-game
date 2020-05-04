@@ -34,7 +34,7 @@ const Header = ({ user }) => {
 };
 
 Header.propTypes = {
-  user: PropTypes.objectOf({
+  user: PropTypes.shape({
     login: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired
   }).isRequired

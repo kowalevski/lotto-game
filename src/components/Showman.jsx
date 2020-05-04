@@ -33,8 +33,12 @@ const Showman = ({ bingoNumber, time }) => {
 };
 
 Showman.propTypes = {
-  bingoNumber: PropTypes.number.isRequired,
+  bingoNumber: PropTypes.number,
   time: PropTypes.number.isRequired
+};
+
+Showman.defaultProps = {
+  bingoNumber: null
 };
 
 export default Showman;

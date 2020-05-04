@@ -23,8 +23,8 @@ const Chips = ({ chips, onDrag }) => {
 };
 
 Chips.propTypes = {
-  chips: PropTypes.objectOf({
-    id: PropTypes.objectOf({
+  chips: PropTypes.shape({
+    id: PropTypes.shape({
       id: PropTypes.number.isRequired,
       isDragged: PropTypes.bool.isRequired,
       isDropped: PropTypes.bool.isRequired

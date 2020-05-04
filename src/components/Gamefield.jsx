@@ -3,13 +3,13 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { useInterval } from 'beautiful-react-hooks';
 import { mapValues } from 'lodash';
 import PropTypes from 'prop-types';
-import utils from '../utils';
+import Scorecard from 'Scorecard';
+import Showman from 'Showman';
+import BingoNumbers from 'BingoNumbers';
+import Chips from 'Chips';
+import Result from 'Result';
+import utils, { getRandomInt } from '../utils';
 import constants from '../constants';
-import Scorecard from './Scorecard';
-import Showman from './Showman';
-import BingoNumbers from './BingoNumbers';
-import Chips from './Chips';
-import Result from './Result';
 
 const Gamefield = ({ onFinishGame, username }) => {
   const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
@@ -24,11 +24,7 @@ const Gamefield = ({ onFinishGame, username }) => {
     setTime(t => t - 1);
 
     if (time === 0) {
-      const bn = utils.getRandomInt(
-        1,
-        constants.MAX_BINGO_NUMBERS,
-        usedBingoNumbers
-      );
+      const bn = getRandomInt(1, constants.MAX_BINGO_NUMBERS, usedBingoNumbers);
       setUsedBingoNumbers([...usedBingoNumbers, bn]);
       setTime(constants.GETTING_BARREL_NUMBER_TIME);
     }
