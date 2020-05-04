@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`returns named numbers with long names 1`] = `
+Array [
+  Object {
+    "name": "Three, Three",
+    "number": 3,
+  },
+  Object {
+    "name": "High Chairs",
+    "number": 44,
+  },
+  Object {
+    "name": "Half of hundred",
+    "number": 50,
+  },
+  Object {
+    "name": "Baker's dozen",
+    "number": 13,
+  },
+  Object {
+    "name": "For the first time",
+    "number": 18,
+  },
+  Object {
+    "name": "Back and forth",
+    "number": 69,
+  },
+  Object {
+    "name": "Ducklings, Geese Swans",
+    "number": 22,
+  },
+  Object {
+    "name": "Grandfather's neighbor",
+    "number": 89,
+  },
+  Object {
+    "name": "Grandfather",
+    "number": 90,
+  },
+]
+`;

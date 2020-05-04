@@ -1,6 +1,7 @@
 /* eslint-disable no-plusplus */
 import { v4 as uuid } from 'uuid';
 import constants from './constants';
+import { namedNumbers } from './data';
 
 const EMPTY_CELLS_MAX_COUNT = {
   ROW: 4,
@@ -15,7 +16,7 @@ const NUMBERS_RANGE = {
   MAX: constants.MAX_BINGO_NUMBERS
 };
 
-const getRandomInt = (argMin, argMax, exclude) => {
+export const getRandomInt = (argMin, argMax, exclude) => {
   const min = Math.ceil(argMin);
   const max = Math.floor(argMax);
   const res = Math.floor(Math.random() * (max - min)) + min;
@@ -145,6 +146,11 @@ const getResult = (cardNumbers, usedBingoNumbers) => {
 
   return { guessedNumbers, wrongNumbers, missedNumbers, isPlayerWinner };
 };
+
+export const getNamedNumbers = () => namedNumbers;
+
+export const getNamedNumbersWithLongName = () =>
+  namedNumbers.filter(({ name }) => name.length > 10);
 
 export default {
   generateBingoNumbers,
