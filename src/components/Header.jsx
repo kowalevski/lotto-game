@@ -37,7 +37,11 @@ Header.propTypes = {
   user: PropTypes.shape({
     login: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired
-  }).isRequired
+  })
+};
+
+Header.defaultProps = {
+  user: null
 };
 
 export default Header;

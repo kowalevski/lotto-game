@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { ThemeContext, useTheme } from '../ThemeSwitcher';
 import Header from './Header';
 import Gamefield from './Gamefield';
-// import Result from './Result';
 
 const Home = ({ user }) => {
   const theme = useTheme();
@@ -27,7 +26,7 @@ const Home = ({ user }) => {
         ) : (
           <Row className="justify-content-center">
             <Button size="lg" variant="success" onClick={handleStartGame}>
-              <span>Start Game </span>
+              Start Game
               <span role="img" aria-label="start">
                 🚀
               </span>
@@ -43,7 +42,11 @@ Home.propTypes = {
   user: PropTypes.shape({
     login: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired
-  }).isRequired
+  })
+};
+
+Home.defaultProps = {
+  user: null
 };
 
 export default Home;

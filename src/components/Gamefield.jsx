@@ -144,7 +144,7 @@ const Gamefield = ({ onFinishGame, username }) => {
       <Row>
         <Col md={12}>
           <Button variant="success" size="sm" onClick={handleShowResult}>
-            <span>Finish Game </span>
+            Finish Game
             <span role="img" aria-label="finish">
               🏁
             </span>
