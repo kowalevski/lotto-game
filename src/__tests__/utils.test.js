@@ -18,5 +18,6 @@ it('returns named numbers with long names', () => {
 it('returns generated cells and rows with bingo numbers', () => {
   const { cells, rows } = utils.generateBingoNumbers();
 
-  console.log(cells, rows);
+  expect(cells).toBeTruthy();
+  expect(rows).toBeTruthy();
 });
