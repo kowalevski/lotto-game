@@ -11,7 +11,8 @@ const TEXT_COLORS = {
 export const ThemeContext = React.createContext({
   theme: LIGHT_THEME,
   color: TEXT_COLORS[LIGHT_THEME],
-  setTheme: () => {}
+  setTheme: () => {},
+  toggleTheme: () => {}
 });
 
 export const useTheme = () => {
@@ -21,9 +22,13 @@ export const useTheme = () => {
     setThemeState(newTheme);
   }, []);
 
+  const toggleTheme = () =>
+    setThemeState(theme === DARK_THEME ? LIGHT_THEME : DARK_THEME);
+
   return {
     theme,
     color: TEXT_COLORS[theme],
-    setTheme
+    setTheme,
+    toggleTheme
   };
 };

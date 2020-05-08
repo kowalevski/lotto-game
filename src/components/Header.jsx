@@ -1,9 +1,12 @@
-import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Navbar, Nav, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { ThemeContext, DARK_THEME } from '../ThemeSwitcher';
 
 const Header = ({ user }) => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Link to="/" className="navbar-brand">
@@ -27,6 +30,14 @@ const Header = ({ user }) => {
               </Link>
             </>
           )}
+          <Form.Check
+            type="switch"
+            id="theme-switch"
+            onClick={() => {
+              toggleTheme();
+            }}
+            label={theme === DARK_THEME ? '🌒' : '🌔'}
+          />
         </Nav>
       </Navbar.Collapse>
     </Navbar>
