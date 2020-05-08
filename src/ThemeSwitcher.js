@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export const DARK_THEME = 'dark';
 export const LIGHT_THEME = 'light';
 
-const TEXT_COLORS = {
+export const TEXT_COLORS = {
   [DARK_THEME]: 'white',
   [LIGHT_THEME]: 'black'
 };

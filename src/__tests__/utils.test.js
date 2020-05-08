@@ -1,4 +1,4 @@
-import { getRandomInt, getNamedNumbersWithLongName } from '../utils';
+import utils, { getRandomInt, getNamedNumbersWithLongName } from '../utils';
 
 it('returns correct number', () => {
   const result = getRandomInt(0, 3, [2]);
@@ -13,4 +13,10 @@ it('returns named numbers with long names', () => {
   const namedNumbers = getNamedNumbersWithLongName();
 
   expect(namedNumbers).toMatchSnapshot();
+});
+
+it('returns generated cells and rows with bingo numbers', () => {
+  const { cells, rows } = utils.generateBingoNumbers();
+
+  console.log(cells, rows);
 });
