@@ -8,17 +8,22 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
-    "lint": "eslint src --ext .js,.jsx",
+    "lint": "jest --config test/jest.lint.js",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|json)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
-    "validate": "npm-run-all --parallel check-format lint test",
+    "validate": "npm-run-all --parallel check-format lint",
     "build": "webpack --mode=production",
     "postbuild": "cp ./public/index.html ./dist/index.html",
     "dev": "npm-run-all --parallel dev:*",
     "dev:frontend": "webpack-dev-server --mode=production",
     "dev:backend": "node backend",
     "setup": "npm install && npm run validate && npm run build"
+  },
+  "jest-runner-eslint": {
+    "cliOptions": {
+      "ignorePath": "./.gitignore"
+    }
   },
   "repository": {
     "type": "git",
@@ -56,6 +61,9 @@
     "husky": "^3.1.0",
     "is-ci-cli": "^2.0.0",
     "jest": "^25.5.4",
+    "jest-runner-eslint": "^0.8.0",
+    "jest-watch-select-projects": "^2.0.0",
+    "jest-watch-typeahead": "^0.6.0",
     "lint-staged": "^9.5.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
