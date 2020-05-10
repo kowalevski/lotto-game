@@ -12,6 +12,9 @@ const Header = ({ user }) => {
       <Link to="/" className="navbar-brand">
         Home
       </Link>
+      <Link to="/quiz" className="navbar-brand">
+        Quiz
+      </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         <Nav>

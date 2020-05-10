@@ -152,10 +152,14 @@ export const getNamedNumbers = () => namedNumbers;
 export const getNamedNumbersWithLongName = () =>
   namedNumbers.filter(({ name }) => name.length > 10);
 
+export const getRandomNamedBingoNumber = () =>
+  namedNumbers[getRandomInt(0, namedNumbers.length - 1, [])];
+
 export default {
   generateBingoNumbers,
   getRandomInt,
   generateChips,
   getFormattedNumberItem,
-  getResult
+  getResult,
+  getRandomNamedBingoNumber
 };

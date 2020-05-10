@@ -44,7 +44,6 @@ const App = () => {
   return (
     <Switch>
       <Route
-        exact
         path="/"
         render={() => <Home user={user} logout={handleLogout} />}
       />

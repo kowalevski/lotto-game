@@ -1,4 +1,4 @@
-// bing numbers with specific names
+// bingo numbers with specific names
 export const namedNumbers = [
   {
     number: 3,

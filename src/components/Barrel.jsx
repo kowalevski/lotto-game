@@ -8,6 +8,7 @@ import BingoNumber from './BingoNumber';
  */
 const StyledBarrel = styled.div`
   margin-left: 20px;
+  width: 46px;
 
   img {
     width: 45px;

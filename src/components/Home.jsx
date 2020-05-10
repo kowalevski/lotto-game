@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Route } from 'react-router-dom';
 import { Container, Row, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { ThemeContext, useTheme } from '../ThemeSwitcher';
 import Header from './Header';
 import Gamefield from './Gamefield';
+import BingoNumberQuiz from './BingoNumberQuiz';
+import { getRandomNamedBingoNumber } from '../utils';
 
 const Home = ({ user }) => {
   const theme = useTheme();
@@ -18,21 +21,37 @@ const Home = ({ user }) => {
       <Header user={user} />
       <br />
       <Container>
-        {isGameStarted ? (
-          <Gamefield
-            onFinishGame={handleFinishGame}
-            username={user ? user.login : null}
-          />
-        ) : (
-          <Row className="justify-content-center">
-            <Button size="lg" variant="success" onClick={handleStartGame}>
-              Start Game
-              <span role="img" aria-label="start">
-                🚀
-              </span>
-            </Button>
-          </Row>
-        )}
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <>
+              {isGameStarted ? (
+                <Gamefield
+                  onFinishGame={handleFinishGame}
+                  username={user ? user.login : null}
+                />
+              ) : (
+                <Row className="justify-content-center">
+                  <Button size="lg" variant="success" onClick={handleStartGame}>
+                    Start Game
+                    <span role="img" aria-label="start">
+                      🚀
+                    </span>
+                  </Button>
+                </Row>
+              )}
+            </>
+          )}
+        />
+
+        <br />
+        <Route
+          path="/quiz"
+          render={() => (
+            <BingoNumberQuiz bingoNumber={getRandomNamedBingoNumber()} />
+          )}
+        />
       </Container>
     </ThemeContext.Provider>
   );

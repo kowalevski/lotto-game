@@ -1,4 +1,8 @@
-import utils, { getRandomInt, getNamedNumbersWithLongName } from '../utils';
+import utils, {
+  getRandomInt,
+  getNamedNumbersWithLongName,
+  getRandomNamedBingoNumber
+} from '../utils';
 
 it('returns correct number', () => {
   const result = getRandomInt(0, 3, [2]);
@@ -20,4 +24,13 @@ it('returns generated cells and rows with bingo numbers', () => {
 
   expect(cells).toBeTruthy();
   expect(rows).toBeTruthy();
+});
+
+it('returns random bingo number', () => {
+  expect(getRandomNamedBingoNumber()).toEqual(
+    expect.objectContaining({
+      number: expect.any(Number),
+      name: expect.any(String)
+    })
+  );
 });
