@@ -12,6 +12,7 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
   },
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -22,7 +23,8 @@ module.exports = {
   plugins: ['react', 'prettier'],
   rules: {
     'import/named': 'off',
-    'import/no-named-as-default-member': 'off'
+    'import/no-named-as-default-member': 'off',
+    'react/state-in-constructor': 'off'
   },
   settings: {
     'import/resolver': 'node'

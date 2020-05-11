@@ -14,4 +14,9 @@ export const fetchWinnerStatus = username =>
     resolve(response);
   });
 
-export default { fetchWinnerStatus };
+export const reportError = (error, info) =>
+  new Promise(resolve => resolve()).then(() =>
+    JSON.stringify({ error, info, success: true })
+  );
+
+export default { fetchWinnerStatus, reportError };

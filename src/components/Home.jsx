@@ -23,7 +23,6 @@ const Home = ({ user }) => {
       <br />
       <Container>
         <Route
-          exact
           path="/"
           render={() => (
             <>

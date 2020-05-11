@@ -4,6 +4,7 @@ import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import AuthForm from './AuthForm';
 import Home from './Home';
+import ErrorBoundary from './ErrorBoundary';
 
 const App = () => {
   const [user, setUser] = React.useState(null);
@@ -44,8 +45,13 @@ const App = () => {
   return (
     <Switch>
       <Route
+        exact
         path="/"
-        render={() => <Home user={user} logout={handleLogout} />}
+        render={() => (
+          <ErrorBoundary>
+            <Home user={user} logout={handleLogout} />
+          </ErrorBoundary>
+        )}
       />
       <Route
         path="/signin"
