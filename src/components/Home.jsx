@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 import { Container, Row, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { getRandomNamedBingoNumber } from '../utils';
 import { ThemeContext, useTheme } from '../ThemeSwitcher';
 import Header from './Header';
 import Gamefield from './Gamefield';
 import BingoNumberQuiz from './BingoNumberQuiz';
-import { getRandomNamedBingoNumber } from '../utils';
+import WinnerStatusVerification from './WinnerStatusVerification';
 
 const Home = ({ user }) => {
   const theme = useTheme();
@@ -44,14 +45,13 @@ const Home = ({ user }) => {
             </>
           )}
         />
-
-        <br />
         <Route
           path="/quiz"
           render={() => (
             <BingoNumberQuiz bingoNumber={getRandomNamedBingoNumber()} />
           )}
         />
+        <Route path="/winner-status" component={WinnerStatusVerification} />
       </Container>
     </ThemeContext.Provider>
   );

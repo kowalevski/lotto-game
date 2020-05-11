@@ -21,7 +21,8 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
-    'import/named': 'off'
+    'import/named': 'off',
+    'import/no-named-as-default-member': 'off'
   },
   settings: {
     'import/resolver': 'node'
