@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import { Navbar, Nav, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ThemeContext, DARK_THEME } from '../ThemeSwitcher';
 
 const Header = ({ user }) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { url } = useRouteMatch();
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -13,11 +14,14 @@ const Header = ({ user }) => {
         Home
       </Link>
       <Nav className="mr-auto">
-        <Link to="/quiz" className="nav-link">
+        <Link to={`${url}/quiz`} className="nav-link">
           Quiz
         </Link>
-        <Link to="/winner-status" className="nav-link">
+        <Link to={`${url}/winner-status`} className="nav-link">
           Winner Status
+        </Link>
+        <Link to={`${url}/blog`} className="nav-link">
+          Blog
         </Link>
       </Nav>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />

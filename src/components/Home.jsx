@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { Container, Row, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getRandomNamedBingoNumber } from '../utils';
@@ -8,10 +8,12 @@ import Header from './Header';
 import Gamefield from './Gamefield';
 import BingoNumberQuiz from './BingoNumberQuiz';
 import WinnerStatusVerification from './WinnerStatusVerification';
+import Blog from './Blog';
 
 const Home = ({ user }) => {
   const theme = useTheme();
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const { path } = useRouteMatch();
 
   const handleStartGame = () => setIsGameStarted(true);
 
@@ -22,9 +24,8 @@ const Home = ({ user }) => {
       <Header user={user} />
       <br />
       <Container>
-        <Route
-          path="/"
-          render={() => (
+        <Switch>
+          <Route exact path={path}>
             <>
               {isGameStarted ? (
                 <Gamefield
@@ -42,15 +43,19 @@ const Home = ({ user }) => {
                 </Row>
               )}
             </>
-          )}
-        />
-        <Route
-          path="/quiz"
-          render={() => (
+          </Route>
+
+          <Route path={`${path}/quiz`}>
             <BingoNumberQuiz bingoNumber={getRandomNamedBingoNumber()} />
-          )}
-        />
-        <Route path="/winner-status" component={WinnerStatusVerification} />
+          </Route>
+          <Route
+            path={`${path}/winner-status`}
+            component={WinnerStatusVerification}
+          />
+          <Route path={`${path}/blog`}>
+            <Blog />
+          </Route>
+        </Switch>
       </Container>
     </ThemeContext.Provider>
   );

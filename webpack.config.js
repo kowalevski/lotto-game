@@ -3,8 +3,9 @@ const path = require('path');
 module.exports = {
   entry: './src/index.jsx',
   output: {
-    path: path.resolve('dist'),
-    filename: 'main.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: 'main.js',
+    publicPath: '/'
   },
   resolve: {
     modules: ['node_modules', path.join(__dirname, 'src'), 'components'],

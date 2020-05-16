@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import AuthForm from './AuthForm';
@@ -44,23 +44,20 @@ const App = () => {
 
   return (
     <Switch>
-      <Route
-        exact
-        path="/"
-        render={() => (
-          <ErrorBoundary>
-            <Home user={user} logout={handleLogout} />
-          </ErrorBoundary>
-        )}
-      />
-      <Route
-        path="/signin"
-        render={() => <AuthForm endpoint="signin" onSuccess={setUser} />}
-      />
-      <Route
-        path="/signup"
-        render={() => <AuthForm endpoint="signup" onSuccess={setUser} />}
-      />
+      <Route exact path="/">
+        <Redirect to="/dashboard" />
+      </Route>
+      <Route path="/dashboard">
+        <ErrorBoundary>
+          <Home user={user} logout={handleLogout} />
+        </ErrorBoundary>
+      </Route>
+      <Route path="/signin">
+        <AuthForm endpoint="signin" onSuccess={setUser} />
+      </Route>
+      <Route path="/signup">
+        <AuthForm endpoint="signup" onSuccess={setUser} />
+      </Route>
     </Switch>
   );
 };

@@ -21,7 +21,7 @@ const Barrel = ({ bingoNumber }) => {
       {bingoNumber && (
         <BingoNumber number={bingoNumber} isBouncing isInBarrel />
       )}
-      <img src="./barrel.png" alt="barrel" />
+      <img src="/barrel.png" alt="barrel" />
     </StyledBarrel>
   );
 };
