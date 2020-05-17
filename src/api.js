@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 // mocked http requests
 
 export const fetchWinnerStatus = username =>
@@ -17,6 +19,16 @@ export const fetchWinnerStatus = username =>
 export const reportError = (error, info) =>
   new Promise(resolve => resolve()).then(() =>
     JSON.stringify({ error, info, success: true })
+  );
+
+export const createPost = params =>
+  new Promise(resolve =>
+    resolve(
+      JSON.stringify({
+        ...params,
+        id: uuid
+      })
+    )
   );
 
 export default { fetchWinnerStatus, reportError };
