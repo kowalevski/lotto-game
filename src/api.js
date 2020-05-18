@@ -22,13 +22,17 @@ export const reportError = (error, info) =>
   );
 
 export const createPost = params =>
-  new Promise(resolve =>
+  new Promise(resolve => {
+    if (!params.id) {
+      throw new Error(); // 💣
+    }
+
     resolve(
       JSON.stringify({
         ...params,
         id: uuid
       })
-    )
-  );
+    );
+  });
 
 export default { fetchWinnerStatus, reportError };

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
-const AuthForm = ({ onSuccess, endpoint }) => {
+const AuthForm = ({ onSuccess, endpoint, title }) => {
   const [error, setError] = useState(null);
   const [formValues, setFormValues] = useState(null);
   const history = useHistory();
@@ -42,6 +42,7 @@ const AuthForm = ({ onSuccess, endpoint }) => {
       <Row className="justify-content-center">
         <Col md={4}>
           <br />
+          <h1>{title}</h1>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formLogin">
               <Form.Label>Login</Form.Label>
@@ -63,6 +64,9 @@ const AuthForm = ({ onSuccess, endpoint }) => {
               Submit
             </Button>
           </Form>
+          <p>
+            <Link to="/">Home</Link>
+          </p>
         </Col>
       </Row>
       <Row>
@@ -74,7 +78,8 @@ const AuthForm = ({ onSuccess, endpoint }) => {
 
 AuthForm.propTypes = {
   endpoint: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired
+  onSuccess: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default AuthForm;

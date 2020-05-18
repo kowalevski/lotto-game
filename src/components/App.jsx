@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
+import ErrorBoundary from './ErrorBoundary';
 import AuthForm from './AuthForm';
 import Home from './Home';
-import ErrorBoundary from './ErrorBoundary';
+import NoMatch from './NoMatch';
 
 const App = () => {
   const [user, setUser] = React.useState(null);
@@ -53,10 +54,13 @@ const App = () => {
         </ErrorBoundary>
       </Route>
       <Route path="/signin">
-        <AuthForm endpoint="signin" onSuccess={setUser} />
+        <AuthForm endpoint="signin" onSuccess={setUser} title="Sign In" />
       </Route>
       <Route path="/signup">
-        <AuthForm endpoint="signup" onSuccess={setUser} />
+        <AuthForm endpoint="signup" onSuccess={setUser} title="Sign Up" />
+      </Route>
+      <Route path="*">
+        <NoMatch />
       </Route>
     </Switch>
   );
