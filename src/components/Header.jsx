@@ -20,8 +20,8 @@ const Header = ({ user }) => {
         <Link to={`${url}/winner-status`} className="nav-link">
           Winner Status
         </Link>
-        <Link to={`${url}/blog`} className="nav-link">
-          Blog
+        <Link to={`${url}/news`} className="nav-link">
+          News
         </Link>
       </Nav>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />

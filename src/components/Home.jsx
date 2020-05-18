@@ -8,7 +8,7 @@ import Header from './Header';
 import Gamefield from './Gamefield';
 import BingoNumberQuiz from './BingoNumberQuiz';
 import WinnerStatusVerification from './WinnerStatusVerification';
-import Blog from './Blog';
+import News from './News';
 
 const Home = ({ user }) => {
   const theme = useTheme();
@@ -52,8 +52,8 @@ const Home = ({ user }) => {
             path={`${path}/winner-status`}
             component={WinnerStatusVerification}
           />
-          <Route path={`${path}/blog`}>
-            <Blog />
+          <Route path={`${path}/news`}>
+            <News />
           </Route>
         </Switch>
       </Container>
