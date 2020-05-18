@@ -13,7 +13,7 @@ import constants from '../constants';
 
 const Gamefield = ({ onFinishGame, username }) => {
   const { cells, rows } = useMemo(() => utils.generateBingoNumbers(), []);
-  const generatedChips = useMemo(() => utils.generateChips(), []);
+  const generatedChips = useMemo(() => utils.makeChips(), []);
   const [cardNumbers, setBingoNumbers] = useState(cells);
   const [isResultShown, setIsResultShown] = useState(false);
   const [chips, setChips] = useState(generatedChips);

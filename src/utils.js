@@ -83,7 +83,7 @@ const generateBingoNumbers = () => {
   return { rows, cells };
 };
 
-const generateChips = () =>
+export const makeChips = () =>
   Array.from(new Array(20)).reduce(
     (acc, _, i) => ({
       ...acc,
@@ -158,7 +158,7 @@ export const getRandomNamedBingoNumber = () =>
 export default {
   generateBingoNumbers,
   getRandomInt,
-  generateChips,
+  makeChips,
   getFormattedNumberItem,
   getResult,
   getRandomNamedBingoNumber
