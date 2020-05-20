@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
 import { Button, Container, Row } from 'react-bootstrap';
+import PostForm from './PostForm';
 
 const News = () => {
   return (
@@ -11,7 +12,9 @@ const News = () => {
           <Button>Create New Post</Button>
         </Link>
       </Row>
-      <Route path="/dashboard/news/new-post">New Post</Route>
+      <Route path="/dashboard/news/new-post">
+        <PostForm userId={123} />
+      </Route>
     </Container>
   );
 };

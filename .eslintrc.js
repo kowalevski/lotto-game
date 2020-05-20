@@ -24,7 +24,9 @@ module.exports = {
   rules: {
     'import/named': 'off',
     'import/no-named-as-default-member': 'off',
-    'react/state-in-constructor': 'off'
+    'import/prefer-default-export': 'off',
+    'react/state-in-constructor': 'off',
+    'react/jsx-props-no-spreading': 'off'
   },
   settings: {
     'import/resolver': 'node'
